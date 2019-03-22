@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "deck.gl": "^6.4.7",
+    "ramda": "^0.26.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-map-gl": "^4.1.1",

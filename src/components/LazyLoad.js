@@ -5,10 +5,13 @@ import DeckGL, {LineLayer, PathLayer} from 'deck.gl';
 import SideNav from './SideNav';
 import {clone} from 'ramda';
 import sampleData from './sample.json';
-import singleRide from '../single-ride.json'
-import {preprocess, hexToRgb} from '../utils';
-
 const {REACT_APP_MAPBOX_TOKEN} = process.env;
+
+const hexToRgb = hex =>
+  hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i
+             ,(m, r, g, b) => '#' + r + r + g + g + b + b)
+    .substring(1).match(/.{2}/g)
+    .map(x => parseInt(x, 16))
 
 class Map extends Component {
   constructor(props) {
@@ -23,7 +26,7 @@ class Map extends Component {
     }
   }
 
-  onViewportChange = (viewport) => {
+  _onViewportChange = (viewport) => {
     if (viewport.longitude > 0) {
       viewport.longitude = 0;
     }
@@ -32,18 +35,7 @@ class Map extends Component {
 
   componentDidMount() {
     this.setState({paths: sampleData})
-    setTimeout(this.addPath(), 3000)
-  }
-
-  addPath = () => {
-    this.setState(({paths}) => {
-      const newPaths = clone(paths);
-      const newRide =  preprocess(singleRide);
-      newPaths.push(newRide);
-      return {
-        paths: newPaths
-      }
-    })
+    setTimeout(this.updatePath, 7000)
   }
 
   updatePath = (id = 0) => {
@@ -60,12 +52,15 @@ class Map extends Component {
 
 
   render(){
+    console.log(process.env);
     const {paths} = this.state;
+    const data = [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}, {sourcePosition: [-121.41669, 37.7853], targetPosition: [-122.41559, 37.781]}];
     const layers = [
+      new LineLayer({id: 'line-layer', data}),
       new PathLayer({
         id: 'path-layer', 
         data: paths,
-        getWidth: d => 100,
+        getWidth: d => 5,
         getColor: d => {
           return hexToRgb(d.color);
         },
@@ -80,24 +75,23 @@ class Map extends Component {
       bearing: 0
     };
 
-    const {viewport} = this.state;
+const {viewport} = this.state;
     return (
       <ReactMapGL 
         mapboxApiAccessToken={'pk.eyJ1Ijoic3Rldmllc2giLCJhIjoiY2p0aXVuMzR5MnRlZDN5bDZ0bGw0cmp2NSJ9.OXiTpVYZZN90VS7nv5cwWg'}
-        onViewportChange={this.onViewportChange}
+        onViewportChange={this._onViewportChange}
         width="100vw"
         height="100vh"
         {...viewport}
       >
-        <DeckGL 
-          initialViewState={viewport}
-          layers={layers}
-          controller={true}
-        />
-        {/* Note that these controls MUST come after DeckGL */}
         <div className="fullscreen">
           <FullscreenControl/>
         </div>
+        <DeckGL 
+          initialViewState={initialViewState}
+          layers={layers}
+          controller={true}
+        />
         <SideNav/>
     </ReactMapGL>
     )

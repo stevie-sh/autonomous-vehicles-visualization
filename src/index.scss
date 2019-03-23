@@ -75,6 +75,10 @@ body {
 .unstyle-list-item {
   list-style-type: none;
   margin-left: 0;
+  filter: brightness(100%);
+  &:hover {
+    cursor: pointer;
+    filter: brightness(70%)
+  }
 }
-
 

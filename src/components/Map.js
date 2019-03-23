@@ -74,7 +74,8 @@ class Map extends Component {
         id: 'path-layer', 
         data: paths,
         rounded: true,
-        getWidth: d => 10,
+        autoHighlight: true,
+        getWidth: d => 8,
         getColor: d => {
           return hexToRgb(d.color);
         },

@@ -18,7 +18,11 @@ class SideNav extends PureComponent {
             {paths.map(({name, id, speed}) => {
               const isClicked = clickedObject === id;
               return (
-                <li key={name} style={isClicked ? {backgroundColor: 'pink'} : {backgroundColor: 'initial'}} className="unstyle-list-item" onHover={() => null}>
+                <li 
+                  key={name} 
+                  style={isClicked ? {backgroundColor: 'pink'} : {backgroundColor: 'initial'}} 
+                  className="unstyle-list-item"
+                  >
                   <span>{name}</span>
                   <span> {speed || -1}</span>
                 </li>

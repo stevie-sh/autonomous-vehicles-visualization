@@ -67,9 +67,9 @@ class Map extends Component {
   renderTooltip = () => {
     const {hoveredObject, pointerX, pointerY} = this.state || {};
     return hoveredObject && (
-          <div style={{position: 'absolute', zIndex: 1, pointerEvents: 'none', left: pointerX, top: pointerY}}>
-          Ride: { hoveredObject.name }
-      </div>
+          <div style={{left: pointerX, top: pointerY}} className="tooltip">
+            Ride: { hoveredObject.name }
+          </div>
     )
   }
 

@@ -1,18 +1,30 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, Component} from 'react';
+import {calculateAverageSpeed} from '../utils';
 
 const defaultContainer = ({children}) => <div className="control-panel">{children}</div>;
 
 class SideNav extends PureComponent {
   render() {
     const Container = this.props.containerComponent || defaultContainer;
+    const {paths, clickedObject} = this.props;
+    //const paths = [0]
     return (
       <Container>
-        <h3>Marker, Popup, NavigationControl and FullscreenControl </h3>
-        <p>Map showing top 20 most populated cities of the United States. Click on a marker to learn more.</p>
-        <p>Data source: <a href="https://en.wikipedia.org/wiki/List_of_United_States_cities_by_population">Wikipedia</a></p>
-        <div className="source-link">
-          <a href="https://github.com/uber/react-map-gl/tree/4.1-release/examples/controls" target="_new">View Code ↗</a>
+        <div class="speedometer">
+          Total Avg Speed: 30mph
         </div>
+        <h3>Rides</h3>
+          <ul className="unstyle-list">
+            {paths.map(({name, id, speed}) => {
+              const isClicked = clickedObject === id;
+              return (
+                <li key={name} style={isClicked ? {backgroundColor: 'pink'} : {backgroundColor: 'initial'}} className="unstyle-list-item" onHover={() => null}>
+                  <span>{name}</span>
+                  <span> {speed || -1}</span>
+                </li>
+              )
+            })}
+          </ul>
       </Container>
     );
   }

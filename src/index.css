@@ -22,23 +22,28 @@ body {
 
 
 .control-panel {
-  position: absolute;
+  position: fixed;
+  transition: .3s cubic-bezier(0, 0.52, 0, 1);
   top: 0;
-  right: 0;
+  left: 0;
   max-width: 320px;
+  height: 100%;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   padding: 12px 24px;
-  margin: 20px;
   font-size: 13px;
   line-height: 2;
   color: #6b6b76;
   text-transform: uppercase;
   outline: none;
+  overflow-y: scroll;
+  z-index: 2;
 }
 
 
 .fullscreen {
+  top: 0;
+  right: 0;
   position: absolute;
   padding: 10px;
 }
@@ -49,6 +54,27 @@ body {
   pointer-events: none;
   background-color: white;
   padding: 1rem 2rem;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+}
+
+.speedometer {
+  background-color: pink;
+  padding: 30px;
+}
+
+.sidenav {
+  position: absolute;
+  transition: top 1s;
+}
+
+.unstyle-list {
+  margin: 0;
+  padding: 0;
+}
+
+.unstyle-list-item {
+  list-style-type: none;
+  margin-left: 0;
 }
 
 

@@ -66,6 +66,12 @@ class Map extends Component {
     this.setState({viewport})
   }
 
+  handleClick = (id) => {
+    this.setState({
+      clickedObject: id
+    })
+  }
+
   render(){
     const {viewport, paths, clickedObject} = this.state;
 
@@ -79,11 +85,7 @@ class Map extends Component {
         getColor: d => {
           return hexToRgb(d.color);
         },
-        onClick: ({object: {id}}, event) => {
-          this.setState({
-            clickedObject: id,
-          })
-        },
+        onClick: ({object: {id}}, event) => this.handleClick(id),
         onHover: ({object, x: pointerX,y: pointerY}) => {
           this.setState({
             hoveredObject: object,
@@ -114,7 +116,7 @@ class Map extends Component {
           {/* Note that these controls MUST come after DeckGL in order to be accessible */}
           <FullScreen/>
       </ReactMapGL>
-      <SideNav paths={paths} clickedObject={clickedObject} />
+      <SideNav paths={paths} clickedObject={clickedObject} handleClick={this.handleClick}/>
     </>
     )
   }

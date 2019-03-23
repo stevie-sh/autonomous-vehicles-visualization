@@ -3,14 +3,14 @@ import {calculateAverageSpeed} from '../utils';
 
 const defaultContainer = ({children}) => <div className="control-panel">{children}</div>;
 
-class SideNav extends PureComponent {
+class SideNav extends Component {
   render() {
     const Container = this.props.containerComponent || defaultContainer;
-    const {paths, clickedObject} = this.props;
+    const {paths, clickedObject, handleClick} = this.props;
     //const paths = [0]
     return (
       <Container>
-        <div class="speedometer">
+        <div className="speedometer">
           Total Avg Speed: 30mph
         </div>
         <h3>Rides</h3>
@@ -19,9 +19,10 @@ class SideNav extends PureComponent {
               const isClicked = clickedObject === id;
               return (
                 <li 
-                  key={name} 
+                  key={id} 
                   style={isClicked ? {backgroundColor: 'pink'} : {backgroundColor: 'initial'}} 
                   className="unstyle-list-item"
+                  onClick={() => handleClick(id)}
                   >
                   <span>{name}</span>
                   <span> {speed || -1}</span>

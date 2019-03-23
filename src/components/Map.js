@@ -6,6 +6,7 @@ import SideNav from './SideNav';
 import {clone} from 'ramda';
 import sampleData from './sample.json';
 import singleRide from '../single-ride.json'
+import manifest from '../manifest.json';
 import {preprocess, hexToRgb} from '../utils';
 
 const {REACT_APP_MAPBOX_TOKEN} = process.env;
@@ -19,7 +20,8 @@ class Map extends Component {
         longitude: -122.4376,
         zoom: 8
       },
-      paths : []
+      paths : [],
+      idx: 0
     }
   }
 
@@ -32,15 +34,15 @@ class Map extends Component {
 
   componentDidMount() {
     this.setState({paths: sampleData})
-    setTimeout(this.addPath(), 3000)
+    setInterval(this.addPath, 2000)
   }
 
   addPath = () => {
-    this.setState(({paths}) => {
-      const newPaths = clone(paths);
-      const newRide =  preprocess(singleRide);
-      newPaths.push(newRide);
+    this.setState(({paths, idx}) => {
+      const newRide = preprocess(manifest[idx]);
+      const newPaths = paths.concat(newRide);
       return {
+        idx: idx + 1,
         paths: newPaths
       }
     })
@@ -72,13 +74,6 @@ class Map extends Component {
       })
       //add new layer here with experimental data
     ];
-    const initialViewState = {
-      longitude: -122.41669,
-      latitude: 37.7853,
-      zoom: 13,
-      pitch: 0,
-      bearing: 0
-    };
 
     const {viewport} = this.state;
     return (
@@ -94,7 +89,7 @@ class Map extends Component {
           layers={layers}
           controller={true}
         />
-        {/* Note that these controls MUST come after DeckGL */}
+        {/* Note that these controls MUST come after DeckGL in order to be accessible */}
         <div className="fullscreen">
           <FullscreenControl/>
         </div>

@@ -1,6 +1,8 @@
 import {prop, props, map, compose, reverse} from 'ramda';
 import {interpolateCubehelixDefault} from 'd3-scale-chromatic';
 import {rgb, cubehelix, hex} from 'd3-color';
+import uuidv4 from './uuid';
+import Chance from 'chance';
 
 const preprocess = (ride) => {
 
@@ -13,13 +15,17 @@ const preprocess = (ride) => {
 
   const color = generateColor();
   const coords = prop('coords', ride);
-  const name = 'default-name';
+
+  const chance = new Chance()
+  const name = chance.name({nationality: 'it'}) //lol
 
   //Note: also reverse position of coords here from lat,lng to lng,lat
   const formatCoords = props(['lng', 'lat'])
+  const id = uuidv4();
 
   const path = map(formatCoords, coords);
   return {
+    id,
     color,
     name,
     path

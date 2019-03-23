@@ -21,7 +21,11 @@ class Map extends Component {
         zoom: 8
       },
       paths : [],
-      idx: 0
+      idx: 0,
+      hoveredObject: null,
+      pointerX: Number.MIN_SAFE_INTEGER,
+      pointerY: Number.MIN_SAFE_INTEGER,
+      averageSpeed : Number.MIN_SAFE_INTEGER,
     }
   }
 
@@ -34,7 +38,7 @@ class Map extends Component {
 
   componentDidMount() {
     this.setState({paths: sampleData})
-    setInterval(this.addPath, 2000)
+    this.timedCursor = setInterval(this.addPath, 2000)
   }
 
   addPath = () => {
@@ -60,6 +64,19 @@ class Map extends Component {
     })
   }
 
+  renderTooltip = () => {
+    const {hoveredObject, pointerX, pointerY} = this.state || {};
+    return hoveredObject && (
+          <div style={{position: 'absolute', zIndex: 1, pointerEvents: 'none', left: pointerX, top: pointerY}}>
+          Ride: { hoveredObject.name }
+      </div>
+    )
+  }
+
+
+  componentWillUnmount = () => {
+    clearInterval(this.timedCursor);
+  }
 
   render(){
     const {paths} = this.state;
@@ -71,6 +88,14 @@ class Map extends Component {
         getColor: d => {
           return hexToRgb(d.color);
         },
+        onHover: ({object,x: pointerX,y: pointerY}) => {
+          this.setState({
+            hoveredObject: object,
+            pointerX: pointerX,
+            pointerY: pointerY
+          })
+        },
+        pickable: true
       })
       //add new layer here with experimental data
     ];
@@ -89,6 +114,7 @@ class Map extends Component {
           layers={layers}
           controller={true}
         />
+        {this.renderTooltip()}
         {/* Note that these controls MUST come after DeckGL in order to be accessible */}
         <div className="fullscreen">
           <FullscreenControl/>

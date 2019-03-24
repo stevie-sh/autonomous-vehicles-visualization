@@ -1,0 +1,2 @@
+#!/usr/bin/env bash -xe
+jq -s '.' ../data/*.json >> manifest.json

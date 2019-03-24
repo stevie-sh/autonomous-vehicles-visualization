@@ -7,7 +7,7 @@ import {clone} from 'ramda';
 import sampleData from './sample.json';
 import manifest from '../manifest.json';
 import FullScreen from './FullScreen';
-import {preprocess, hexToRgb} from '../utils';
+import {preprocess, hexToRgb, getIndexById} from '../utils';
 
 const {REACT_APP_MAPBOX_TOKEN} = process.env;
 
@@ -29,7 +29,6 @@ class Map extends Component {
       averageSpeed : Number.MIN_SAFE_INTEGER,
     }
   }
-
 
   componentDidMount = () => {
     this.timedCursor = setInterval(this.addPath, 2000)
@@ -86,13 +85,14 @@ class Map extends Component {
           return hexToRgb(d.color);
         },
         onClick: ({object: {id}}, event) => this.handleClick(id),
-        onHover: ({object, x: pointerX,y: pointerY}) => {
+        onHover: ({object, x: pointerX, y: pointerY}) => {
           this.setState({
             hoveredObject: object,
             pointerX: pointerX,
             pointerY: pointerY
           })
         },
+        highlightedObjectIndex: getIndexById(clickedObject, paths),
         pickable: true
       })
       //add new layer here with experimental data

@@ -5,7 +5,7 @@ import DeckGL, {LineLayer, PathLayer} from 'deck.gl';
 import SideNav from './SideNav';
 import {clone} from 'ramda';
 import sampleData from './sample.json';
-import manifest from '../manifest.json';
+import allData from '../allData.json';
 import FullScreen from './FullScreen';
 import {preprocess, hexToRgb, getIndexById} from '../utils';
 
@@ -23,7 +23,7 @@ class Map extends Component {
       paths : [],
       idx: 0,
       hoveredObject: null,
-      clickedObject: null,
+      clickedPathId: null,
       pointerX: Number.MIN_SAFE_INTEGER,
       pointerY: Number.MIN_SAFE_INTEGER,
       averageSpeed : Number.MIN_SAFE_INTEGER,
@@ -31,7 +31,7 @@ class Map extends Component {
   }
 
   componentDidMount = () => {
-    this.timedCursor = setInterval(this.addPath, 2000)
+    this.timedCursor = setInterval(this.addPath, 5000)
   }
 
   componentWillUnmount = () => {
@@ -40,7 +40,7 @@ class Map extends Component {
 
   addPath = () => {
     this.setState(({paths, idx}) => {
-      const newRide = preprocess(manifest[idx]);
+      const newRide = preprocess(allData[idx]);
       const newPaths = paths.concat(newRide);
       return {
         idx: idx + 1,
@@ -67,12 +67,12 @@ class Map extends Component {
 
   handleClick = (id) => {
     this.setState({
-      clickedObject: id
+      clickedPathId: id
     })
   }
 
   render(){
-    const {viewport, paths, clickedObject} = this.state;
+    const {viewport, paths, clickedPathId} = this.state;
 
     const layers = [
       new PathLayer({
@@ -92,7 +92,7 @@ class Map extends Component {
             pointerY: pointerY
           })
         },
-        highlightedObjectIndex: getIndexById(clickedObject, paths),
+        highlightedObjectIndex: getIndexById(clickedPathId, paths),
         pickable: true
       })
       //add new layer here with experimental data
@@ -116,7 +116,7 @@ class Map extends Component {
           {/* Note that these controls MUST come after DeckGL in order to be accessible */}
           <FullScreen/>
       </ReactMapGL>
-      <SideNav paths={paths} clickedObject={clickedObject} handleClick={this.handleClick}/>
+      <SideNav paths={paths} clickedPathId={clickedPathId} handleClick={this.handleClick}/>
     </>
     )
   }

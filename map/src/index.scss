@@ -27,6 +27,7 @@ body {
   top: 0;
   left: 0;
   max-width: 320px;
+  width: 500px;  //TODO: Bound to change
   height: 100%;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -80,5 +81,19 @@ body {
     cursor: pointer;
     filter: brightness(70%)
   }
+}
+
+.unstyle-button {
+	font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+  border: none;
+  padding: 0;
+  display: inline;
+}
+
+.timetrail {
+  margin-bottom:2rem;
 }
 

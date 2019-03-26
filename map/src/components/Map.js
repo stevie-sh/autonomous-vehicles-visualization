@@ -3,11 +3,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGL from 'react-map-gl'
 import DeckGL, {LineLayer, PathLayer} from 'deck.gl';
 import SideNav from './SideNav';
+import Tooltip from './Tooltip';
 import {clone} from 'ramda';
-import sampleData from './sample.json';
-import allData from '../allData.json';
 import FullScreen from './FullScreen';
-import {preprocess, hexToRgb, getIndexById} from '../utils';
+import {preprocess, hexToRgb, getIndexById, getRide, getRideFilenames, throttle, debounce} from '../utils';
 
 const {REACT_APP_MAPBOX_TOKEN} = process.env;
 
@@ -15,35 +14,62 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      /* SF view */
       viewport: {
         latitude: 37.7577,
         longitude: -122.4376,
         zoom: 8
       },
       paths : [],
-      idx: 0,
       hoveredObject: null,
       clickedPathId: null,
       pointerX: Number.MIN_SAFE_INTEGER,
       pointerY: Number.MIN_SAFE_INTEGER,
       averageSpeed : Number.MIN_SAFE_INTEGER,
+      isLoading: false
     }
   }
 
-  componentDidMount = () => {
-    this.timedCursor = setInterval(this.addPath, 5000)
+  componentWillMount = () => {
+    this.updateDimensions();
+  }
+
+  componentDidMount = async () => {
+    window.addEventListener("resize", debounce(this.updateDimensions, 200));
+    this.setState({isLoading: true})
+    const rideFilenames = await getRideFilenames();
+    for (const filename of rideFilenames) {
+      const renderAndFetch = async () => {
+        const ride = await getRide(filename);
+        this.addPath(ride);
+      }
+      await throttle(renderAndFetch, 300);
+    }
+    this.setState({isLoading: false})
   }
 
   componentWillUnmount = () => {
-    clearInterval(this.timedCursor);
+    window.removeEventListener("resize", this.updateDimensions);
   }
 
-  addPath = () => {
-    this.setState(({paths, idx}) => {
-      const newRide = preprocess(allData[idx]);
-      const newPaths = paths.concat(newRide);
+  updateDimensions = () => {
+     const w = window,
+         d = document,
+         documentElement = d.documentElement,
+         body = d.getElementsByTagName('body')[0],
+         width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
+         height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
+    const {viewport} = this.state;
+    viewport.width = width;
+    viewport.height = height;
+    this.setState({viewport});
+  }
+
+  addPath = (ride) => {
+    const newPath = preprocess(ride);
+    this.setState(({paths}) => {
+      const newPaths = paths.concat(newPath);
       return {
-        idx: idx + 1,
         paths: newPaths
       }
     })
@@ -52,9 +78,7 @@ class Map extends Component {
   renderTooltip = () => {
     const {hoveredObject, pointerX, pointerY} = this.state || {};
     return hoveredObject && (
-        <div style={{left: pointerX, top: pointerY}} className="tooltip">
-          Ride: { hoveredObject.name }
-        </div>
+      <Tooltip pointerX={pointerX} pointerY={pointerY} hoveredObject={hoveredObject}/>
     )
   }
 
@@ -72,7 +96,7 @@ class Map extends Component {
   }
 
   render(){
-    const {viewport, paths, clickedPathId} = this.state;
+    const {viewport, paths, clickedPathId, isLoading} = this.state;
 
     const layers = [
       new PathLayer({
@@ -80,7 +104,9 @@ class Map extends Component {
         data: paths,
         rounded: true,
         autoHighlight: true,
-        getWidth: d => 8,
+        getWidth: d => {
+          return d.id === clickedPathId ? 30 : 25
+        },
         getColor: d => {
           return hexToRgb(d.color);
         },
@@ -95,7 +121,6 @@ class Map extends Component {
         highlightedObjectIndex: getIndexById(clickedPathId, paths),
         pickable: true
       })
-      //add new layer here with experimental data
     ];
 
     return (
@@ -113,10 +138,10 @@ class Map extends Component {
             controller={true}
           />
           {this.renderTooltip()}
-          {/* Note that these controls MUST come after DeckGL in order to be accessible */}
+          {/* Note that these controls should come after DeckGL in order to be accessible */}
           <FullScreen/>
       </ReactMapGL>
-      <SideNav paths={paths} clickedPathId={clickedPathId} handleClick={this.handleClick}/>
+      <SideNav paths={paths} clickedPathId={clickedPathId} handleClick={this.handleClick} isLoading={isLoading}/>
     </>
     )
   }

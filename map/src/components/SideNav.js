@@ -1,24 +1,17 @@
 import React, {PureComponent, Component} from 'react';
 import {calculateAverageSpeed, getIndexById, formatPathToChart} from '../utils';
 import {Line} from 'react-chartjs-2';
+import Spinner from './Spinner';
 import moment from 'moment';
 
-const defaultContainer = ({children}) => <div className="control-panel">{children}</div>;
-
-class SideNav extends Component {
-  render() {
-    const Container = this.props.containerComponent || defaultContainer;
-    const {paths, clickedPathId, handleClick} = this.props;
+const SideNav = ({paths, clickedPathId, handleClick, isLoading}) => {
     const clickedPathIndex = getIndexById(clickedPathId, paths);
     return (
-      <Container>
-        <div className="speedometer">
-          Total Avg Speed: 30mph
-        </div>
+      <div className="control-panel">
         <h2>Rides 📊 </h2>
         <TimeTrailChart path={paths[clickedPathIndex]}/>
-        <h3>Live View</h3>
-          <ul className="unstyle-list">
+        <h3>Live View {isLoading ? <Spinner /> : <>✅</> } </h3>
+          <ul id="live-view-list" className="unstyle-list">
             {paths.map(({name, id, speed}) => {
               const isClicked = clickedPathId === id;
               return (
@@ -29,23 +22,20 @@ class SideNav extends Component {
                   onClick={() => handleClick(id)}
                   >
                   <span>{name}</span>
-                  <span> {speed || -1}</span>
+                  <span> {speed || -1} mph</span>
                   <span> > </span>
                 </li>
               )
             })}
           </ul>
-      </Container>
+      </div>
     );
-  }
 }
 
-
 const data = {
-  labels: [new Date(),new Date()],
+  labels: [],
   datasets: [
     {
-      label: 'My First dataset',
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -83,7 +73,6 @@ const TimeTrailChart = ({path}) => {
     },
   }
 
-  //console.log('coming through', path)
   const dataP = formatPathToChart(path);
 
   return (

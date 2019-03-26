@@ -7,6 +7,7 @@ import calculateAverageSpeed from './averageSpeeds'
 import Chance from 'chance';
 
 
+
 /**
  * @param {Object} - a single object representing a ride, for this project as the parsed json
  * @returns {Object} - a single path formatted for rendering onto the map, this path definition is

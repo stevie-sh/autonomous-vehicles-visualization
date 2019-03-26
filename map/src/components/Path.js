@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import DeckGL, {PathLayer} from 'deck.gl';
+import DeckGL, {PathLayer} from 'deck.gl'0;
 
 class Path extends Component {
   constructor(props) {

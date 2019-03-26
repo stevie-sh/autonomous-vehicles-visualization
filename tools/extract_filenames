@@ -1,0 +1,2 @@
+#!/usr/bin/env bash -xe
+ls | jq -R '[.]' | jq -s -c 'add' >> filenames.json

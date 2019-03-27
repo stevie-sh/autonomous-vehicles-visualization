@@ -5,8 +5,9 @@ import Spinner from './Spinner';
 import {values} from 'ramda';
 
 const DistributionChart = ({paths, toggleThrottle, isLoading, throttleMs=1300}) => {
+  const labels = ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '>= 70 (vroom)'];
   const data = {
-    labels: ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '>= 70 (vroom)'],
+    labels,
     datasets: [
       {
         backgroundColor: 'rgba(255,99,132,1)',
@@ -18,8 +19,8 @@ const DistributionChart = ({paths, toggleThrottle, isLoading, throttleMs=1300}) 
     ]
   };
 
-  const dataP = values(createDistribution(paths));
-  data.datasets[0].data = dataP.slice();
+  const distributionData = values(createDistribution(paths, labels.length));
+  data.datasets[0].data = distributionData.slice();
 
   //TODO: Toggle the throttler to change the speed of requests and disable/enable the live viewing!
   const renderThrottleMessage = () => (

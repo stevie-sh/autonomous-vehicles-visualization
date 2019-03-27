@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGL from 'react-map-gl'
-import DeckGL, {LineLayer, PathLayer} from 'deck.gl';
+import DeckGL, {PathLayer} from 'deck.gl';
 import SideNav from './SideNav';
 import Tooltip from './Tooltip';
-import {clone} from 'ramda';
 import FullScreen from './FullScreen';
 import {preprocess, hexToRgb, getIndexById, getRide, getRideFilenames, throttle, debounce} from '../utils';
 
@@ -25,8 +24,7 @@ class Map extends Component {
       clickedPathId: null,
       pointerX: Number.MIN_SAFE_INTEGER,
       pointerY: Number.MIN_SAFE_INTEGER,
-      averageSpeed : Number.MIN_SAFE_INTEGER,
-      isLoading: false
+      isLoading: false,
     }
   }
 
@@ -37,14 +35,16 @@ class Map extends Component {
   componentDidMount = async () => {
     window.addEventListener("resize", debounce(this.updateDimensions, 200));
     this.setState({isLoading: true})
+
     const rideFilenames = await getRideFilenames();
     for (const filename of rideFilenames) {
       const renderAndFetch = async () => {
         const ride = await getRide(filename);
         this.addPath(ride);
       }
-      await throttle(renderAndFetch, 20);
+      await throttle(renderAndFetch, 1300);
     }
+
     this.setState({isLoading: false})
   }
 
@@ -103,6 +103,11 @@ class Map extends Component {
     })
   }
 
+  toggleThrottle = () => {
+    //TODO:
+  }
+
+
   render(){
     const {viewport, paths, clickedPathId, isLoading} = this.state;
 
@@ -143,7 +148,13 @@ class Map extends Component {
           {/* Note that these controls should come after DeckGL in order to be accessible */}
           <FullScreen/>
       </ReactMapGL>
-      <SideNav paths={paths} clickedPathId={clickedPathId} handleClick={this.handleClick} isLoading={isLoading}/>
+      <SideNav 
+        paths={paths}
+        clickedPathId={clickedPathId} 
+        handleClick={this.handleClick} 
+        handleToggle={this.handleToggle}
+        isLoading={isLoading}
+      />
     </>
     )
   }

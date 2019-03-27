@@ -1,6 +1,6 @@
-import {prop, props, map, compose, reverse} from 'ramda';
+import {prop, props, map, } from 'ramda';
 import {interpolateCubehelixDefault} from 'd3-scale-chromatic';
-import {rgb, cubehelix, hex} from 'd3-color';
+import {rgb} from 'd3-color';
 import moment from 'moment';
 import uuidv4 from './uuid';
 import calculateAverageSpeed from './averageSpeeds'

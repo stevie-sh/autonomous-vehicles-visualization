@@ -1,5 +1,8 @@
-import {pick} from 'ramda';
-
+/**
+ * Format data given to a more usable format as defined by deck.gl path
+ * passing any other needed attributes along
+ * @returns {Object}
+ */
 const pickData = (path) => {
   const {start_time: startTime, end_time: endTime, coords} = path;
   const len = coords.length;
@@ -13,12 +16,11 @@ const pickData = (path) => {
   }
 }
 
-
 /**
  * Precision helper, takes count of number of coords and speeds 
  * against total time in seconds elapsed in dataset.
  * Likely to be many dropped packets in each ride dataset. 
- * (not sure why, but most results look to be 240)
+ * (not sure why, but most results look to be 240) (not used)
  * @returns {Number}
  */
 const countDroppedPackets = (path) => {

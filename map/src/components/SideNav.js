@@ -1,33 +1,27 @@
-import React, {PureComponent, Component} from 'react';
-import {calculateAverageSpeed, getIndexById, formatPathToChart} from '../utils';
-import Spinner from './Spinner';
+import React from 'react';
+import {getIndexById} from '../utils';
 import TimeTrailChart from './TimeTrailChart';
-import moment from 'moment';
+import DistributionChart from './DistributionChart';
+import RideList from './RideList';
 
-const SideNav = ({paths, clickedPathId, handleClick, isLoading}) => {
+const SideNav = ({paths, clickedPathId, handleClick, handleToggle, toggleThrottle, isLoading}) => {
     const clickedPathIndex = getIndexById(clickedPathId, paths);
+    const clickedPath = paths[clickedPathIndex];
     return (
       <div className="control-panel">
-        <h2>Rides 📊 </h2>
-        <TimeTrailChart path={paths[clickedPathIndex]}/>
-        <h3>Live View {isLoading ? <Spinner /> : <>✅</> } </h3>
-          <ul id="live-view-list" className="unstyle-list">
-            {paths.map(({name, id, speed}) => {
-              const isClicked = clickedPathId === id;
-              return (
-                <li 
-                  key={id} 
-                  style={isClicked ? {backgroundColor: 'pink'} : {backgroundColor: 'initial'}} 
-                  className="unstyle-list-item"
-                  onClick={() => handleClick(id)}
-                  >
-                  <span>{name}</span>
-                  <span> {speed || -1} mph</span>
-                  <span> > </span>
-                </li>
-              )
-            })}
-          </ul>
+        <h2>Rides 🚗 </h2>
+        <DistributionChart 
+          isLoading={isLoading}
+          paths={paths}
+          toggleThrottle={toggleThrottle}
+        />
+        <TimeTrailChart path={clickedPath}/>
+        <RideList 
+          isLoading={isLoading}
+          handleClick={handleClick}
+          paths={paths}
+          clickedPathId={clickedPathId}
+        />
       </div>
     );
 }

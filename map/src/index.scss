@@ -1,3 +1,8 @@
+/*** Variables ***/
+$control-panel-width: 500px;
+
+
+/*** Set up ***/
 @font-face {
   font-family: Futura;
   font-weight: 400;
@@ -21,13 +26,14 @@ body {
 }
 
 
+/*** Component styling  ***/
 .control-panel {
   position: fixed;
   transition: .3s cubic-bezier(0, 0.52, 0, 1);
   top: 0;
   left: 0;
-  max-width: 320px;
-  width: 500px;  //TODO: Bound to change
+  max-width: 700px;
+  width: $control-panel-width;  
   height: 100%;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -101,6 +107,28 @@ body {
 .timetrail {
   margin-bottom:2rem;
 }
+
+
+.modal-detailed-view {
+  background-color: white;
+  height: 50rem;
+  width: 65rem;
+  margin-left: $control-panel-width * 1.2;
+  margin-top: 50px; //i know...
+  border-radius: 10px;
+}
+
+.modal-overlay { 
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+}
+
+
+/*** CSS Animations for spinny ***/
 
 @-moz-keyframes three-quarters-loader {
   0% {

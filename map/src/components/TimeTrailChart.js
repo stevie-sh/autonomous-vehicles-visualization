@@ -1,21 +1,8 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import {Line} from 'react-chartjs-2';
-import {formatPathToChart} from '../utils';
+import {formatPathToChart, timeSeriesOptions as options} from '../utils';
 
 const TimeTrailChart = ({path}) => {
-  const options = {
-    legend: {
-      display: false
-    },
-    scales : {
-      xAxes: [{
-        type: 'time',
-        time : {
-          unit: 'minute',
-        }
-      }]
-    },
-  }
 
   const data = formatPathToChart(path);
 

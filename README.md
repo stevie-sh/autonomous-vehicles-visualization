@@ -23,6 +23,7 @@ so if data were to be streamed directly into a server we could read and see live
 - live dash
 - throttle requests
 - debounce resizing
+and more!
 
 ## TODOS: Things I would've done with a couple more hours
 - implement downsampling on the data (see `utils/downsample.js` file) for better time series chart performance.

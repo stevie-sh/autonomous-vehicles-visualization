@@ -27,9 +27,9 @@ and more!
 
 ## TODOS: Things I would've done with a couple more hours
 - (DONE) **highest priority** implement downsampling on the data (see `utils/downsample.js` file) for better time series chart performance.
+- generators seem like a perfect tool for the `toggleThrottle` function i wanted to implement to allow users to alter speeds of data fetching, might've taken a bit of time though. changing the throttle speed alone fetches data a LOT faster but the chartjs performance cant keep up with <1s throttling.
 - interpolate data for dropped 240 packets?
 - better indicate sources of data.
-- generators seem like a perfect tool for the `toggleThrottle` function i wanted to implement to allow users to alter speeds of data fetching, might've taken a bit of time though. changing the throttle speed alone fetches data a LOT faster but the chartjs performance cant keep up with <1s throttling.
 - complete the server-sent events streaming api or cursoring/pagination for use case of live data map dashboard.
 - implement interpolation or future prediction on speed.
 

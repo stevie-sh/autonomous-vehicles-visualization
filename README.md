@@ -1,4 +1,4 @@
-## [Demo: https://funmapzzzwithcomma-735b8mx1a9.netlify.com] (https://funmapzzzwithcomma-735b8mx1a9.netlify.com)
+## [Demo: https://funmapzzzwithcomma-735b8mx1a9.netlify.com](https://funmapzzzwithcomma-735b8mx1a9.netlify.com)
 
 folders are:
 - map (main for visual map display, created with create-react-app)

@@ -8,8 +8,8 @@ const sleep = (ms) => {
  * @param ms {Number} - how long to sleep to throttle
  */
 const throttle = async (fn, ms, ...args) => {
-  await sleep(ms);
   const res = await fn(...args);
+  await sleep(ms);
   return res;
 }
 

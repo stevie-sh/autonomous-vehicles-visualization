@@ -4,7 +4,7 @@ const dataTemplate = {
   labels: [],
   datasets: [
     {
-      label: 'Empty dataset',
+      label: '',
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',

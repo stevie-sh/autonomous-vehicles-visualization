@@ -13,6 +13,11 @@ const TimeTrailChart = ({path}) => {
         time : {
           unit: 'minute',
         }
+      }],
+      yAxes: [{
+        ticks :{
+          beginAtZero: true
+        }
       }]
     },
   }

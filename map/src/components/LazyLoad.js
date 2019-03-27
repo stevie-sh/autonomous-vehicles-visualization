@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import ReactMapGL, {FullscreenControl} from 'react-map-gl'
+import MapGL, {FullscreenControl} from 'react-map-gl'
 import DeckGL, {LineLayer, PathLayer} from 'deck.gl';
 import SideNav from './SideNav';
 import {clone} from 'ramda';
@@ -77,7 +77,7 @@ class Map extends Component {
 
 const {viewport} = this.state;
     return (
-      <ReactMapGL 
+      <MapGL 
         mapboxApiAccessToken={'pk.eyJ1Ijoic3Rldmllc2giLCJhIjoiY2p0aXVuMzR5MnRlZDN5bDZ0bGw0cmp2NSJ9.OXiTpVYZZN90VS7nv5cwWg'}
         onViewportChange={this._onViewportChange}
         width="100vw"
@@ -93,7 +93,7 @@ const {viewport} = this.state;
           controller={true}
         />
         <SideNav/>
-    </ReactMapGL>
+    </MapGL>
     )
   }
 }

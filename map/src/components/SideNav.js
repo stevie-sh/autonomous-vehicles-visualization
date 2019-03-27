@@ -1,10 +1,8 @@
-import React, {PureComponent, Component} from 'react';
-import {calculateAverageSpeed, getIndexById, formatPathToChart} from '../utils';
-import Spinner from './Spinner';
+import React from 'react';
+import {getIndexById} from '../utils';
 import TimeTrailChart from './TimeTrailChart';
 import DistributionChart from './DistributionChart';
 import RideList from './RideList';
-import moment from 'moment';
 
 const SideNav = ({paths, clickedPathId, handleClick, handleToggle, toggleThrottle, isLoading}) => {
     const clickedPathIndex = getIndexById(clickedPathId, paths);

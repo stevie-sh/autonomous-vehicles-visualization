@@ -1,4 +1,4 @@
-import {keys, type, slice, mergeLeft, clone} from 'ramda';
+import {type, clone} from 'ramda';
 
 const dataTemplate = {
   labels: [],

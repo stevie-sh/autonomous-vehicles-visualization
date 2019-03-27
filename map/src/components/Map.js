@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGL from 'react-map-gl'
-import DeckGL, {LineLayer, PathLayer} from 'deck.gl';
+import DeckGL, {PathLayer} from 'deck.gl';
 import SideNav from './SideNav';
 import Tooltip from './Tooltip';
-import {clone} from 'ramda';
 import FullScreen from './FullScreen';
 import {preprocess, hexToRgb, getIndexById, getRide, getRideFilenames, throttle, debounce} from '../utils';
 
@@ -110,7 +109,7 @@ class Map extends Component {
 
 
   render(){
-    const {viewport, paths, clickedPathId, isLoading, throttleMs} = this.state;
+    const {viewport, paths, clickedPathId, isLoading} = this.state;
 
     const layers = [
       new PathLayer({

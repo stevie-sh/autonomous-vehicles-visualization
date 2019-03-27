@@ -9,7 +9,7 @@ const getRideFilenames = async () => {
     method : 'GET',
   }
   try {
-    const res = await fetch(path);
+    const res = await fetch(path, config);
     const fileNames = await res.json();
     return fileNames;
   } catch(e) {
@@ -23,7 +23,7 @@ const getRide = async (filename) => {
     method : 'GET',
   }
   try {
-    const res = await fetch(path);
+    const res = await fetch(path, config);
     const ride = await res.json();
     return ride;
   } catch(e) {

@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
-import {Bar, Line} from 'react-chartjs-2';
-import {formatPathToChart, createDistribution, histogramOptions as options} from '../utils';
+import {Bar} from 'react-chartjs-2';
+import {createDistribution, histogramOptions as options} from '../utils';
 import Spinner from './Spinner';
-import {map, countBy, values} from 'ramda';
+import {values} from 'ramda';
 
 const DistributionChart = ({paths, toggleThrottle, isLoading, throttleMs=1300}) => {
   const data = {

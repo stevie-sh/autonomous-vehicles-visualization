@@ -31,10 +31,11 @@ so if data were to be streamed directly into a server we could read and see live
 - implement interpolation or future prediction on speed.
 - complete the server-sent events streaming api or cursoring/pagination for use case of live data map dashboard.
 
-### Other notes
+### Others
 - proptypes
 - interpolate the cubehelix color *across* each path for better path differentiation.
 - swap out chartjs for a d3-based solution to unify charting. its a shame this lib also is so tightly coupled to its styling.
+- better naming
 
 ## Bonus
 - quarter implemented cursoring api in `/server` - good for case when not all data is here

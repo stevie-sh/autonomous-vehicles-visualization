@@ -2,6 +2,7 @@
 $control-panel-width: 500px;
 
 
+/*** Set up ***/
 @font-face {
   font-family: Futura;
   font-weight: 400;
@@ -25,6 +26,7 @@ body {
 }
 
 
+/*** Component styling  ***/
 .control-panel {
   position: fixed;
   transition: .3s cubic-bezier(0, 0.52, 0, 1);
@@ -126,7 +128,7 @@ body {
 }
 
 
-/*** CSS Animations  ***/
+/*** CSS Animations for spinny ***/
 
 @-moz-keyframes three-quarters-loader {
   0% {

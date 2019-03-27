@@ -2,35 +2,28 @@ import React, {PureComponent, Component} from 'react';
 import {calculateAverageSpeed, getIndexById, formatPathToChart} from '../utils';
 import Spinner from './Spinner';
 import TimeTrailChart from './TimeTrailChart';
-import DistributionBarChart from './DistributionBarChart';
+import DistributionChart from './DistributionChart';
+import RideList from './RideList';
 import moment from 'moment';
 
-const SideNav = ({paths, clickedPathId, handleClick, handleToggle, toggleThrottle, isLoading, throttleMs}) => {
+const SideNav = ({paths, clickedPathId, handleClick, handleToggle, toggleThrottle, isLoading}) => {
     const clickedPathIndex = getIndexById(clickedPathId, paths);
-    const path = paths[clickedPathIndex];
+    const clickedPath = paths[clickedPathIndex];
     return (
       <div className="control-panel">
         <h2>Rides 🚗 </h2>
-        <DistributionBarChart isLoading={isLoading} paths={paths} toggleThrottle={toggleThrottle} throttleMs={throttleMs}/>
-        <TimeTrailChart path={path}/>
-        <h3>Live View {isLoading ? <Spinner /> : <>✅</> } </h3>
-          <ul id="live-view-list" className="unstyle-list">
-            {paths.map(({name, id, speed}) => {
-              const isClicked = clickedPathId === id;
-              return (
-                <li 
-                  key={id} 
-                  style={isClicked ? {backgroundColor: 'pink'} : {backgroundColor: 'initial'}} 
-                  className="unstyle-list-item"
-                  onClick={() => handleClick(id)}
-                  >
-                  <span>{name}</span>
-                  <span> {speed || -1} mph</span>
-                  <span> > </span>
-                </li>
-              )
-            })}
-          </ul>
+        <DistributionChart 
+          isLoading={isLoading}
+          paths={paths}
+          toggleThrottle={toggleThrottle}
+        />
+        <TimeTrailChart path={clickedPath}/>
+        <RideList 
+          isLoading={isLoading}
+          handleClick={handleClick}
+          paths={paths}
+          clickedPathId={clickedPathId}
+        />
       </div>
     );
 }

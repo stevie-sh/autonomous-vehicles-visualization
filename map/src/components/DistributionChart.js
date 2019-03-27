@@ -1,29 +1,10 @@
 import React, {PureComponent} from 'react';
 import {Bar, Line} from 'react-chartjs-2';
-import {formatPathToChart} from '../utils';
+import {formatPathToChart, createDistribution, histogramOptions as options} from '../utils';
 import Spinner from './Spinner';
-import {prop, map, countBy, values} from 'ramda';
+import {map, countBy, values} from 'ramda';
 
-const DistributionBarChart = ({paths, toggleThrottle,  isLoading, throttleMs}) => {
-  const options = {
-    legend: {
-      display: false
-    },
-    scales: {
-      xAxes : [{
-        categoryPercentage: 1.0,
-        barPercentage: 1.0,
-        display: true
-      }
-      ],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
-  }
-
+const DistributionChart = ({paths, toggleThrottle, isLoading, throttleMs=1300}) => {
   const data = {
     labels: ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '>= 70 (vroom)'],
     datasets: [
@@ -37,24 +18,14 @@ const DistributionBarChart = ({paths, toggleThrottle,  isLoading, throttleMs}) =
     ]
   };
 
-  const createDistribution = (paths) => {
-    const speeds = map(prop('speed'), paths); 
-    const bucket = (num) => {
-      if (num >= 70) return 7;
-      return Math.floor(num/10);
-    }
-
-    const distribution = countBy(bucket, speeds);
-    return distribution;
-  }
-
   const dataP = values(createDistribution(paths));
   data.datasets[0].data = dataP.slice();
 
+  //TODO: Toggle the throttler to change the speed of requests and disable/enable the live viewing!
   const renderThrottleMessage = () => (
     <>
       <Spinner />
-      <button onClick={toggleThrottle}>Slow down requests to see chart live!</button>
+      <button onClick={toggleThrottle}> Slow down requests to see chart live!</button>
     </>
   )
 
@@ -67,4 +38,4 @@ const DistributionBarChart = ({paths, toggleThrottle,  isLoading, throttleMs}) =
 }
 
 
-export default DistributionBarChart;
+export default DistributionChart;

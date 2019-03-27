@@ -6,8 +6,6 @@ import SideNav from './SideNav';
 import Tooltip from './Tooltip';
 import {clone} from 'ramda';
 import FullScreen from './FullScreen';
-import Modal from 'react-modal';
-import DistributionBarChart from './DistributionBarChart';
 import {preprocess, hexToRgb, getIndexById, getRide, getRideFilenames, throttle, debounce} from '../utils';
 
 const {REACT_APP_MAPBOX_TOKEN} = process.env;
@@ -27,8 +25,6 @@ class Map extends Component {
       clickedPathId: null,
       pointerX: Number.MIN_SAFE_INTEGER,
       pointerY: Number.MIN_SAFE_INTEGER,
-      throttleMs : 1300,
-      rideIndex : 0,
       isLoading: false,
     }
   }
@@ -38,20 +34,16 @@ class Map extends Component {
   }
 
   componentDidMount = async () => {
-    const {rideIndex, throttleMs} = this.state;
-
     window.addEventListener("resize", debounce(this.updateDimensions, 200));
     this.setState({isLoading: true})
 
     const rideFilenames = await getRideFilenames();
-    for (let i = rideIndex; i < rideFilenames.length; i++) {
-      const filename = rideFilenames[i];
+    for (const filename of rideFilenames) {
       const renderAndFetch = async () => {
         const ride = await getRide(filename);
         this.addPath(ride);
       }
-      await throttle(renderAndFetch, throttleMs);
-      this.setState({rideIndex: i});
+      await throttle(renderAndFetch, 1300);
     }
 
     this.setState({isLoading: false})
@@ -98,10 +90,6 @@ class Map extends Component {
     this.setState({viewport})
   }
 
-  toggleThrottle = () => {
-    //TODO:
-  }
-
   handleClick = (id) => {
     this.setState({
       clickedPathId: id
@@ -116,14 +104,13 @@ class Map extends Component {
     })
   }
 
-  handleToggle = () => {
-    this.setState(({isModalOpen}) => ({
-      isModalOpen: !isModalOpen
-    }))
+  toggleThrottle = () => {
+    //TODO:
   }
 
+
   render(){
-    const {viewport, paths, clickedPathId, isLoading, isModalOpen, throttleMs} = this.state;
+    const {viewport, paths, clickedPathId, isLoading, throttleMs} = this.state;
 
     const layers = [
       new PathLayer({
@@ -168,8 +155,6 @@ class Map extends Component {
         handleClick={this.handleClick} 
         handleToggle={this.handleToggle}
         isLoading={isLoading}
-        throttleMs={throttleMs}
-        toggleThrottle={this.toggleThrottle}
       />
     </>
     )

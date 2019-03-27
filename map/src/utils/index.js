@@ -5,6 +5,7 @@ import getIndexById from './getIndexById';
 import formatPathToChart from './formatPathToChart'
 import throttle from './throttle';
 import debounce from './debounce';
+import downsample from './downsample';
 import createDistribution from './createDistribution';
 import {histogramOptions, timeSeriesOptions} from './chartConfigs';
 import {getRide, getRideFilenames} from './api';
@@ -21,5 +22,6 @@ export {
   debounce,
   createDistribution,
   histogramOptions,
-  timeSeriesOptions
+  timeSeriesOptions,
+  downsample
 };

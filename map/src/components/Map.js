@@ -43,7 +43,7 @@ class Map extends Component {
         const ride = await getRide(filename);
         this.addPath(ride);
       }
-      await throttle(renderAndFetch, 300);
+      await throttle(renderAndFetch, 20);
     }
     this.setState({isLoading: false})
   }
@@ -95,6 +95,14 @@ class Map extends Component {
     })
   }
 
+  handleHover = ({object, x: pointerX, y: pointerY}) => {
+    this.setState({
+      hoveredObject: object,
+      pointerX,
+      pointerY
+    })
+  }
+
   render(){
     const {viewport, paths, clickedPathId, isLoading} = this.state;
 
@@ -111,13 +119,7 @@ class Map extends Component {
           return hexToRgb(d.color);
         },
         onClick: ({object: {id}}, event) => this.handleClick(id),
-        onHover: ({object, x: pointerX, y: pointerY}) => {
-          this.setState({
-            hoveredObject: object,
-            pointerX: pointerX,
-            pointerY: pointerY
-          })
-        },
+        onHover: this.handleHover,
         highlightedObjectIndex: getIndexById(clickedPathId, paths),
         pickable: true
       })

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
-import {formatPathToChart, timeSeriesOptions as options} from '../utils';
+import {formatPathToChart, downsample, timeSeriesOptions as options} from '../utils';
 
 const TimeTrailChart = ({path}) => {
 

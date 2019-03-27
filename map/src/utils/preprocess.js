@@ -4,6 +4,7 @@ import {rgb} from 'd3-color';
 import moment from 'moment';
 import uuidv4 from './uuid';
 import calculateAverageSpeed from './averageSpeeds'
+import downsample from './downsample';
 import Chance from 'chance';
 
 
@@ -46,15 +47,19 @@ const preprocess = (ride) => {
 
   /* Extract speeds */
   const speeds = map(prop('speed'), coords);
-  const _speeds = []
+  const allSpeeds = []
   for (let i = 0; i < speeds.length; i++) {
     if (i === speeds.length - 1) {
-      _speeds.push({x: endTime, y: speeds[speeds.length-1]})
+      allSpeeds.push({x: endTime, y: speeds[speeds.length-1]})
       continue;
     }
     const time = moment(startTime).add(i, 's').format('YYYY-MM-DDTHH:mm:ss');
-    _speeds.push({x: time, y: speeds[i]});
+    allSpeeds.push({x: time, y: speeds[i]});
   }
+
+
+  /* Downsample speeds for better performance */
+  const sampledSpeeds = downsample(allSpeeds, 5);
 
   return {
     id,
@@ -64,7 +69,7 @@ const preprocess = (ride) => {
     startTime,
     endTime,
     path,
-    speeds: _speeds,
+    speeds: sampledSpeeds,
   }
 }
 

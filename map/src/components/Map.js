@@ -24,6 +24,7 @@ class Map extends Component {
       clickedPathId: null,
       pointerX: Number.MIN_SAFE_INTEGER,
       pointerY: Number.MIN_SAFE_INTEGER,
+      isControlPanelExpanded: true,
       isLoading: false,
     }
   }
@@ -53,12 +54,14 @@ class Map extends Component {
   }
 
   updateDimensions = () => {
+
      const w = window,
          d = document,
          documentElement = d.documentElement,
          body = d.getElementsByTagName('body')[0],
          width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
          height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
+
     const {viewport} = this.state;
     viewport.width = width;
     viewport.height = height;
@@ -103,13 +106,20 @@ class Map extends Component {
     })
   }
 
+  handleNavClick = () => {
+    this.setState(({isControlPanelExpanded}) => ({
+      isControlPanelExpanded: !isControlPanelExpanded
+      })
+    )
+  }
+
   toggleThrottle = () => {
     //TODO:
   }
 
 
   render(){
-    const {viewport, paths, clickedPathId, isLoading} = this.state;
+    const {viewport, paths, clickedPathId, isLoading, isControlPanelExpanded} = this.state;
 
     const layers = [
       new PathLayer({
@@ -152,6 +162,8 @@ class Map extends Component {
         paths={paths}
         clickedPathId={clickedPathId} 
         handleClick={this.handleClick} 
+        isControlPanelExpanded={isControlPanelExpanded}
+        handleNavClick={this.handleNavClick}
         handleToggle={this.handleToggle}
         isLoading={isLoading}
       />
